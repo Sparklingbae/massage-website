@@ -1,0 +1,44 @@
+/* src/components/Services.css */
+
+.services {
+    position: relative;
+    padding: 50px 0;
+    color: white; /* Assuming you want white text on the background image */
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background: url('../assets/background.jpg') no-repeat center center/cover;
+    z-index: 0;
+}
+
+.services::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Black overlay with 50% opacity */
+    z-index: -1;
+}
+
+.service {
+    background: rgba(255, 255, 255, 0.2);
+    flex: 1 1 30%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+}
+
+.service img {
+    max-width: 100%;
+    height: auto;
+}
+
+.service .price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
