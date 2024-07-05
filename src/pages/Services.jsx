@@ -1,6 +1,5 @@
 // src/components/Services.jsx
 
-import React from 'react';
 import './Services.css'; // Import CSS file for styling
 
 const services = [

@@ -1,11 +1,9 @@
-// src/pages/SignupForm.jsx
-
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { PaystackButton } from "react-paystack";
 import "./SignupForm.css";
 
-const SignupForm = () => {
+const ProviderForm = () => {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         name: '',
@@ -57,7 +55,11 @@ const SignupForm = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/api/signup', paymentData);
+            const response = await axios.post('http://localhost:5000/api/providers/signup', paymentData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             console.log('Signup successful:', response.data);
         } catch (error) {
             console.error('Signup error:', error);
@@ -80,7 +82,7 @@ const SignupForm = () => {
     };
 
     return (
-        <form className="signup-form">
+        <form className="provider-form">
             {step === 1 && (
                 <div className="form-step">
                     <h2>Personal Information</h2>
@@ -113,4 +115,4 @@ const SignupForm = () => {
     );
 };
 
-export default SignupForm;
+export default ProviderForm;

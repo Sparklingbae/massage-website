@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import TherapistList from './TherapistList';
+import { useState, useEffect } from 'react';
 import './BookingForm.css'; // Import CSS for styling
 
 const BookingForm = () => {
     const [formData, setFormData] = useState({ name: '', email: '', service: '', date: '', time: '', address: '' });
     const [services, setServices] = useState([]);
-    const [selectedTherapist, setSelectedTherapist] = useState(null);
 
     useEffect(() => {
         // Fetch services from an API or define them statically
@@ -14,25 +11,25 @@ const BookingForm = () => {
             // Example API call to fetch services
             // const response = await axios.get('/api/services');
             // setServices(response.data);
-            
-            // Static services list
+
+            // Static services list with prices
             const servicesList = [
-                'Swedish Massage',
-                'Deep Tissue Massage',
-                'Aromatherapy Massage',
-                'Hot Stone Massage',
-                'Lingam Massage',
-                'Sports Massage',
-                'Couple Massage',
-                'Four Hand Massage',
-                'Four Hand Nuru',
-                'Thai Massage',
-                'Nuru Massage',
-                'Erotic Massage',
-                'Nuru Extra',
-                'Nuru Executive',
-                'Nuru Presidential',
-                'Erotic Premium'
+                { name: 'Swedish Massage', price: 50 },
+                { name: 'Deep Tissue Massage', price: 60 },
+                { name: 'Aromatherapy Massage', price: 70 },
+                { name: 'Hot Stone Massage', price: 80 },
+                { name: 'Lingam Massage', price: 90 },
+                { name: 'Sports Massage', price: 100 },
+                { name: 'Couple Massage', price: 120 },
+                { name: 'Four Hand Massage', price: 130 },
+                { name: 'Four Hand Nuru', price: 140 },
+                { name: 'Thai Massage', price: 150 },
+                { name: 'Nuru Massage', price: 160 },
+                { name: 'Erotic Massage', price: 170 },
+                { name: 'Nuru Extra', price: 180 },
+                { name: 'Nuru Executive', price: 190 },
+                { name: 'Nuru Presidential', price: 200 },
+                { name: 'Erotic Premium', price: 210 }
             ];
             setServices(servicesList);
         };
@@ -48,10 +45,6 @@ const BookingForm = () => {
         e.preventDefault();
         // Handle form submission, e.g., send data to an API
         console.log('Form data submitted:', formData);
-    };
-
-    const handleSelectTherapist = (therapist) => {
-        setSelectedTherapist(therapist);
     };
 
 
@@ -71,7 +64,9 @@ const BookingForm = () => {
                 <select name="service" value={formData.service} onChange={handleChange} required>
                     <option value="">Select a service</option>
                     {services.map((service, index) => (
-                        <option key={index} value={service}>{service}</option>
+                        <option key={index} value={service.name}>
+                            {service.name} - ${service.price}
+                        </option>
                     ))}
                 </select>
             </label>
@@ -85,10 +80,8 @@ const BookingForm = () => {
             </label>
             <label>
                 Address:
-                <input type="address" name="address" value={formData.address} onChange={handleChange} required />
+                <input type="text" name="address" value={formData.address} onChange={handleChange} required />
             </label>
-            <TherapistList onSelectTherapist={handleSelectTherapist} />
-            {/*<button type="submit">Book Now</button>*/}
         </form>
     );
 };

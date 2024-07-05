@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import BookingForm from '../components/BookingForm';
 import { PaystackButton } from 'react-paystack';
 import axios from 'axios';
@@ -18,16 +18,18 @@ const Book = () => {
     const [transactionReference, setTransactionReference] = useState('');
 
     const handleSuccess = async (reference) => {
+        console.log('Payment success:', reference);
         setPaymentSuccess(true);
         setTransactionReference(reference.reference);
 
         // Notify backend
         try {
-            await axios.post('/api/booking/notify', {
+            const response = await axios.post('http://localhost:5000/api/booking/notify', {
                 name,
                 email,
                 transactionReference: reference.reference,
-            });
+            }, { withCredentials: true });
+            console.log('Notification to backend successful:', response.data);
         } catch (error) {
             console.error('Error notifying backend:', error);
         }
@@ -39,6 +41,7 @@ const Book = () => {
     };
 
     const handleClose = () => {
+        console.log("Payment closed.");
         alert("Wait! You need this massage, don't go!!!!");
     };
 
@@ -46,9 +49,9 @@ const Book = () => {
         email,
         amount,
         publicKey,
-        text: "Book Now",
-        onSuccess: handleSuccess,
-        onClose: handleClose,
+        text: "Pay Now",
+        onSuccess: handleSuccess,  // Use handleSuccess function
+        onClose: handleClose,      // Use handleClose function
     };
 
     return (
@@ -60,7 +63,6 @@ const Book = () => {
                 <div className="payment-success">
                     <h2>Payment Successful!</h2>
                     <p>Thank you for your payment! Your transaction reference is {transactionReference}.</p>
-                    <p>If you don't have WhatsApp, you can contact us at <a href="mailto:support@example.com">support@example.com</a>.</p>
                 </div>
             )}
         </div>

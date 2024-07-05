@@ -1,6 +1,3 @@
-import React from 'react';
-import logo from '../assets/logo.png';
-import Services from './Services';
 import therapistsImage from '../assets/therapists.jpg';
 import treatmentsImage from '../assets/treatments.jpg';
 import environmentImage from '../assets/environment.jpg';
