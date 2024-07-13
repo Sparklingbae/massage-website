@@ -1,69 +1,39 @@
+// server.js
 require('dotenv').config();
+
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
-const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
-const authRoutes = require('./routes/authRoutes');
-const serviceRoutes = require('./routes/serviceRoutes');
-const providerRoutes = require('./routes/providerRoutes');
-const paymentRoutes = require('./routes/paymentRoutes');
-const subscriptionRoutes = require('./routes/subscriptionRoutes');
-const path = require('path');
-const Booking = require('./models/Booking');
-
 const app = express();
+const bookingsRouter = require('./routes/bookings'); // Adjust route paths as per your project structure
+const bookingNotifyRouter = require('./routes/bookingNotify');
 
-// Log environment variable to debug
-console.log('MONGODB_URI:', process.env.MONGODB_URI);
-
-// Connect Database
-connectDB();
-
-// Init Middleware
+app.use(express.json());
 app.use(bodyParser.json());
+app.use(cors()); // Allow cross-origin requests
 
-// Allow requests from frontend domain
-app.use(cors({
-    origin: 'http://localhost:3000',  // Replace with your frontend URL
-    credentials: true,  // Enable credentials (cookies, authorization headers)
-}));
-
-// Define Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/services', serviceRoutes);
-app.use('/api/subscriptions', subscriptionRoutes);
-app.use('/api/providers', providerRoutes);
-app.use('/api/payment', paymentRoutes);
-
-// Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Endpoint to receive payment notification
-app.post('/api/booking/notify', async (req, res) => {
-    const { name, email, transactionReference } = req.body;
-
-    // Save booking details to the database
-    const newBooking = new Booking({ name, email, transactionReference });
-
-    try {
-        await newBooking.save();
-        res.status(200).send('Notification received and booking saved');
-    } catch (error) {
-        console.error('Error saving booking:', error);
-        res.status(500).send('Error saving booking');
-    }
+app.post('/api/booking/notify', (req, res) => {
+    console.log('Received request at /api/booking/notify', req.body);
+    res.status(200).send('Notification received');
 });
 
-// Endpoint to handle WhatsApp redirection
-app.get('/api/whatsapp', (req, res) => {
-    const { whatsappNumber, message } = req.query;
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true, // Deprecated and has no effect
+    useUnifiedTopology: true, // Deprecated and has no effect
+})
+.then(() => console.log('MongoDB connected...'))
+.catch(err => console.error('MongoDB connection error:', err));
 
-    // Construct WhatsApp URL
-    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+// Booking route
+app.use('/api/bookings', bookingsRouter); // Example route setup for bookings
+app.use('/api/booking', bookingNotifyRouter); // Example route setup for booking notifications
 
-    // Redirect to WhatsApp
-    res.redirect(whatsappURL);
+app.get('/endpoint', (req, res) => {
+    res.send('Hello from backend!');
 });
 
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

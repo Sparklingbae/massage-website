@@ -1,10 +1,10 @@
-import BookingForm from '../components/BookingForm';
+import ProviderForm from '../components/ProviderForm';
 import { PaystackButton } from 'react-paystack';
-import './Book.css';
+import './Provider.css';
 
-const Book = () => {
+const Provider = () => {
   const publicKey = 'pk_test_c764ecba5cc4150770defdc8f17c80e3d4b10147'; // Replace with your Paystack test public key
-  const amount = 5000 * 100; // 2000 Naira converted to kobo
+  const amount = 10000 * 100; // 2000 Naira converted to kobo
   const email = "user@example.com"; // Replace with user's email dynamically
   const name = "John Doe"; // Replace with user's name dynamically
 
@@ -19,12 +19,12 @@ const Book = () => {
   };
 
   return (
-    <div className="book-section">
-      <h2>Book a Session</h2>
-      <BookingForm />
+    <div className="register-section">
+      <h2>Register</h2>
+      <ProviderForm />
       <PaystackButton {...componentProps} />
     </div>
   );
 };
 
-export default Book;
+export default Provider;

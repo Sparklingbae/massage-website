@@ -50,7 +50,7 @@ const BookingForm = () => {
 
     return (
         <form className="booking-form" onSubmit={handleSubmit}>
-            <h2>Book an Appointment</h2>
+            {/*<h2>Book an Appointment</h2>*/}
             <label>
                 Name:
                 <input type="text" name="name" value={formData.name} onChange={handleChange} required />
